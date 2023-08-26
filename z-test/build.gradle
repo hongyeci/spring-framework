@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group 'com.spring'
+version '5.3.27-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":spring-jdbc"))
+    implementation(project(":spring-web"))
+    implementation(project(":spring-context"))
+    implementation(project(":spring-aop"))
+
+    //aspectJ
+    implementation('org.aspectj:aspectjweaver:1.9.5')
+    implementation('org.aspectj:aspectjrt:1.9.5')
+
+    //jdbc
+    implementation('mysql:mysql-connector-java:8.0.11')
+    implementation('org.mybatis:mybatis:3.4.5')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
