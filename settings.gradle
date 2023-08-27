@@ -1,14 +1,20 @@
 pluginManagement {
 	repositories {
+		mavenLocal()
+		maven { url 'https://maven.aliyun.com/repository/public/' }
+		maven { url 'https://maven.aliyun.com/repository/spring/' }
+		maven { url 'https://maven.aliyun.com/repository/jcenter/' }
+		maven { url 'https://maven.aliyun.com/repository/google/' }
+		maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+		maven { url 'https://jitpack.io/' }
 		mavenCentral()
 		gradlePluginPortal()
-		maven { url "https://repo.spring.io/release" }
 	}
 }
 
 plugins {
 	id "com.gradle.enterprise" version "3.12.1"
-	id "io.spring.ge.conventions" version "0.0.13"
+//	id "io.spring.ge.conventions" version "0.0.13"
 }
 
 include "spring-aop"
@@ -55,3 +61,5 @@ settings.gradle.projectsLoaded {
 		}
 	}
 }
+include 'z-test'
+
