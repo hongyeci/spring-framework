@@ -2,7 +2,10 @@ package com.spring.service;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +18,14 @@ import javax.annotation.PostConstruct;
 public class UserService implements InitializingBean {
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	private UserService userService;
+
+
 
 	private String name;
 
@@ -32,6 +43,22 @@ public class UserService implements InitializingBean {
 	public void test(){
 		System.out.println(this.orderService);
 	}
+
+	@Transactional
+	public void testJdbc(){
+		jdbcTemplate.execute("INSERT INTO employees_copy (id,name,age,`position`,hire_time) VALUES (10,'trans',23,'transation','2023-08-10 15:57:22')");
+		//其使用的是userService类的普通对象，并不是其事务代理对象，导致事务失效
+		userService.nextFun();
+	}
+
+	/**
+	 * 其使用的是userService类的普通对象，并不是其事务代理对象，导致事务失效
+	 */
+	@Transactional(propagation = Propagation.NEVER)
+	public void nextFun(){
+		jdbcTemplate.execute("INSERT INTO employees_copy (id,name,age,`position`,hire_time) VALUES (11,'trans',23,'transation','2023-08-10 15:57:22')");
+	}
+
 
 	/**
 	 * 初始化

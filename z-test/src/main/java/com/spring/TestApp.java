@@ -4,7 +4,9 @@ import com.spring.config.AppConfig;
 import com.spring.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.annotation.PostConstruct;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 
 /**
  * @description 启动类
@@ -17,8 +19,10 @@ public class TestApp {
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
 		//注册配置类
 		applicationContext.register(AppConfig.class);
-		//启动容器  创建一个bean对象
+//		//启动容器  创建一个bean对象
 		applicationContext.refresh();
+
+
 		/**
 		 * bean的创建和销毁
 		 * userService ---> 推断构造方法(@Autowired指定的构造方法--默认构造方法--byType byName) ---> 对象（没有值） ---> DI（依赖注入@Autowired）
@@ -32,7 +36,7 @@ public class TestApp {
 		//手动注入bean对象
 //		applicationContext.getBeanFactory().registerSingleton();
 		UserService userService = (UserService) applicationContext.getBean("userService");
-		userService.test();
+		userService.testJdbc();
 
 		/**
 		 * spring AOP逻辑实现
@@ -52,6 +56,7 @@ public class TestApp {
 
 		/**
 		 * 初始化前
+		 * 判断方法是否有PostConstruct注释
 		 */
 //		for (Method method : userService.getClass().getDeclaredMethods()) {
 //			if (method.isAnnotationPresent(PostConstruct.class)) {
@@ -61,6 +66,7 @@ public class TestApp {
 
 		/**
 		 * 初始化
+		 * 判断对象是否实现InitializingBean接口
 		 */
 //		if (userService1 instanceof InitializingBean) {
 //			try {
